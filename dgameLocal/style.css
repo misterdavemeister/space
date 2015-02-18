@@ -1,0 +1,272 @@
+head, body {
+	background: #000;
+	color: gray;
+	overflow: scroll;
+}
+
+hr {
+	border: solid;
+	border-color: #333;
+}
+
+h1, h2, h3 {
+	text-align: center;
+}
+
+.top {
+	position: fixed;
+	top: 0;
+	height: 100px;
+	width: 100%;
+	background-color: black;
+	z-index: 1;
+}
+
+#saveGame {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: gray;
+	border: none;
+	border-radius: 5px;
+} 
+
+#resetGame {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: gray;
+	border: none;
+	border-radius: 5px;
+}
+
+#wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -100px; /* Negative indent footer by it's height */
+}
+
+#resources {
+	border-left: solid;
+	border-right: solid;
+	border-bottom: solid;
+	height: 25px;
+}
+
+#resources p {
+	display: inline;
+	margin-left: 20px;
+	margin-right: 40px;
+}
+
+#points {
+	display: inline;
+}
+
+#tooltip {
+	display: none;
+	background: #C8C8C8;
+	margin-left: 28px;
+	padding: 10px;
+	position: absolute;
+	z-index: 1000;
+	width: 200px;
+	height: 100px;
+}
+
+#messages {
+	background: #000;
+	margin-top: 20px;
+	border: 1px solid;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 150px;
+	margin-bottom: 20px;
+}
+
+#messages p {
+	margin-left: 5px;
+	color: red;
+}
+
+.buildings {
+	right: 100px;
+}
+
+.building-name {
+	font-size: 20px;
+}
+
+.research-name {
+	font-size: 20px;
+}
+
+.buildings p {
+	display: inline;
+}
+
+.upgrade-button{
+	margin-top: 10px;
+	margin-right: 40px;
+	min-width: 90px;
+	height: 35px;
+	background-color: gray;
+	border: none;
+	border-radius: 5px;
+}
+
+.ship-name {
+	font-size: 20px;
+}
+
+.queue-button {
+	margin-top: 10px;
+	margin-right: 40px;
+	margin-left: 10px;
+	height: 35px;
+	min-width: 69px;
+	background-color: gray;
+	border: none;
+	border-radius: 5px;
+} 
+.queue-text {
+	margin-top: 20px;
+	max-height: 15px;
+	width: 50px;
+	background: #000;
+	color: gray;
+	text-align: center;
+}
+
+.red {
+	color: rgb(128,0,0);
+}
+
+.green {
+	color: green;
+}
+
+#ship-info {
+	right: 100px;
+}
+
+#ship-list p {
+	display: inline;
+}
+
+#research-info {
+	right: 100px;
+}
+
+#research-list p {
+	display: inline;
+}
+
+.sidebar {
+	position: fixed;
+	left: 0;
+	top: 100px;
+	bottom: 0;
+	width: 100px;
+	height: 70%;
+	border: solid;
+	border-color: #333;
+}
+
+.sidebar p { 
+	margin-top: 10px;
+	text-align: center;
+	margin-bottom: 15px;
+	cursor: pointer;
+}
+
+.planetsView {
+	position: fixed;
+	right: 0;
+	top: 100px;
+	bottom: 0;
+	width: 100px;
+	height: auto;
+	border: solid;
+	border-color: #333;
+	border-bottom: none;
+}
+
+.planetsView p { 
+	margin-top: 10px;
+	text-align: center;
+	margin-bottom: 15px;
+	cursor: pointer;
+}
+
+#homeworld-menu-item {
+	color: rgb(0, 136, 204);
+}
+
+#buildings-menu-item {
+	color: rgb(0, 136, 204);
+}
+/*
+#push {
+	height: 100px;
+}
+/*
+footer {
+ height: 100px;
+ position: relative;
+//position: absolute; bottom: 0; to make it stay in view on the bottom during scrolling 
+ width: 100%;
+ bottom: 0;
+}*/
+
+/* divs */
+
+#defensepage {
+}
+
+#galaxypage {
+}
+
+#fleetpage {
+}
+
+#researchpage {
+}
+
+#shipyardpage {
+	
+}
+#overviewpage {
+	
+}
+.page {
+	position: absolute;
+	left: 150px;
+	top: -1330px;
+	z-index: -1;
+}
+
+.page#buildingspage {
+	position: absolute;
+	left: 150px;
+	top: -1330px;
+	z-index: -1;
+}
+/* shipyard queue */
+
+.queue {
+	display: none;
+	text-align: center;
+	height: 100px;
+	background: #000;
+	margin-top: 20px;
+	border: 1px solid;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 150px;
+	margin-bottom: 20px;
+}
+#homeworld-shipyard-queue {
+	display: block;
+}

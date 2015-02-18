@@ -1,0 +1,9 @@
+var metalBuilding = [
+	{
+		"type" : "metal",
+		"level" : "0",
+		"baseCostMetal" : "60",
+		"baseCostCrystal" : "15",
+		"baseCostFuel" : "0"
+	}
+]

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="file:///Users/david/Desktop/website/bootstrap/css/bootstrap.css" type="text/css"> <!--local-->
+		<!--<link rel="stylesheet" href="http://www.davidmcole.com/bootstrap/css/bootstrap.css" type="text/css"> remote -->
+		<link rel="stylesheet" href="style.css" type="text/css">
+		<script src="jquery.js"></script>
+		<script src="dgame.js"></script>
+		<script src="planets.js"></script>
+		<script src="resources.js"></script>
+		<script src="buildings.js"></script>
+		<script src="ships.js"></script>
+		<script src="shipyard.js"></script>
+		<script src="research.js"></script>
+		<script src="defense.js"></script>
+		<script src="events.js"></script>
+		<script src="dgameJSON.js"></script>
+		<script>
+		function showValue(newValue)
+		{
+			document.getElementById("ship-scargo-text").value = newValue;
+		}
+		window.onload=function() {
+		//	showDescription();
+			if (!Array.prototype.every)
+			{
+			  Array.prototype.every = function(fun)
+			  {
+			    var len = this.length;
+			    if (typeof fun != "function")
+			      throw new TypeError();
+
+			    var thisp = arguments[1];
+			    for (var i = 0; i < len; i++)
+			    {
+			      if (i in this &&
+			          !fun.call(thisp, this[i], i, this))
+			        return false;
+			    }
+
+			    return true;
+			  };
+			}
+			
+			if (loadJSON() == false) {//returned false from loadJSON() because localStorage['gameStarted'] == undefined, no previous save
+				//window.location = "file:///Users/david/Desktop/server/dgameLocal/index.html/";	
+				console.log("loadJSON() returned false");
+				newGame();
+			}
+			else {
+				console.log('loadJSON() returned true');
+					resumeGame('Homeworld');
+			}
+		}
+	/*	function showDescription(){
+			var m = $('.metal-description');
+		$('.buildings.metal').hover(function() {
+			if (!m.hasClass('animated')) {
+				m.dequeue().stop().animate({opacity: 1.0});
+			}
+		}, function() {
+				m.addClass('animated').animate({opacity: 0.0}, function() {
+					m.removeClass('animated').dequeue();
+				});
+			});
+		}*/
+		//$('.buildings.metal').mouseleave(function() {
+		//		m.animate({opacity: 0.0});
+		//	});
+		//}
+		function fade(planet) {
+			if ((getPlanet(planet) != currentPlanet)){
+			$(document.body).animate({opacity: '0'}, 500, function() {
+				saveJSON(currentPlanet);  
+				changePlanet(planet);
+				resumeGame(planet);
+				$(document.body).animate({opacity: '1'}, 500);
+			});
+			}
+		}
+		
+		</script>
+		<title>DGame - Buildings</title>
+	</head>
+	<body>
+		<div id="wrapper">
+			
+			<div class="sidebar">
+				<p id="overview-menu-item" onclick="changePage('Overview')"> Overview </p>
+				<p id="buildings-menu-item" onclick="changePage('Buildings')"> Buildings </p>	
+				<p id="shipyard-menu-item" onclick="changePage('Shipyard')"> Shipyard </p> 
+				<p id='research-menu-item' onclick="changePage('Research')"> Research </p>
+				<p id='fleet-menu-item' onclick="changePage('Fleet')"> Fleet </p>
+				<p id='galaxy-menu-item' onclick="changePage('Galaxy')"> Galaxy </p>
+				<p id='defense-menu-item' onclick="changePage('Defense')"> Defense </p>
+			</div>
+			
+			<div class='planetsView'>
+				<p id='homeworld-menu-item' onclick="fade('Homeworld');";></p> <hr>
+				<p id='colony1-menu-item' onclick="fade('Colony1');";></p> <hr>
+				<p id='colony2-menu-item' onclick="fade('Colony2');";></p> <hr>
+				<p id='colony3-menu-item' onclick="fade('Colony3');";></p> <hr>
+				<p id='colony4-menu-item' onclick="fade('Colony4');";></p> <hr>
+				<p id='colony5-menu-item' onclick="fade('Colony5');";></p> <hr>
+				<p id='colony6-menu-item' onclick="fade('Colony6');";></p> <hr>
+				<p id='colony7-menu-item' onclick="fade('Colony7');";></p> <hr>
+				<p id='colony8-menu-item' onclick="fade('Colony8');";></p> <hr>
+			</div> <!--planetsView-->
+			<div class='top'>
+			<input id='resetGame' type='button' value='Reset Game' onclick='resetGame()'>
+			
+			<div class="container" id='resources'>
+				<p id="metal" onclick="addResources('metal')">Metal:</p>
+				<p id="crystal" onclick="addResources('crystal')">Crystal:</p>
+				<p id="fuel" onclick="addResources('fuel')">Fuel:</p>
+				<p id="energy">Energy:</p>
+				<p id='points' onclick='console.log(points)'></p>
+			</div> <!--container-->
+			
+			<input id='saveGame' type='button' value='Save Game' onclick='saveGame()'>
+			<h1 id='pagename'> BUILDINGS </h1>
+			<hr>
+			</div> <!--top-->
+			<div class='page' id='overviewpage'>
+				<h2 id='planetName' onclick='renamePlanet(this, currentPlanet)'></h2> 
+			<div class="container">
+				<div id="messages">
+				</div> <!--messages-->
+			</div> <!--container-->
+			</div> <!--overviewpage-->
+			
+			<div class='page' id="buildingspage">
+			<div class='container'>
+				<div class="buildings metal">
+				<div class="row">
+				<div class='span4'>
+					<p class="building-name" id='building-metal' onclick="changeLevel('metal', 'building')"></p> <br>
+					<p id='building-metal-requirements'></p> <br>
+					<p id='building-metal-dependencies'></p> <br>
+					<input class='upgrade-button'id="metalUpgrade" type="button" value="Build" onclick="upgradeBuilding(this, 'metal', currentPlanet, 'building-metal-requirements')" />
+				</div>
+				<div class='span7'>
+					<p class="metal-description"> Description: <br> Metal Mine makes metal, man.Metal Mine makes metal, man.Metal Mine makes metal, man.Metal Mine makes metal, man.Metal Mine makes metal, man.Metal Mine makes metal, man.Metal Mine ma</p>
+				</div>
+				</div>
+				</div>
+		
+					<hr>
+					<div class="buildings crystal">
+					<div class="row">
+					<div class='span4'>
+					<p class="building-name" id='building-crystal' onclick="changeLevel('crystal', 'building')"></p> <br>
+					<p id='building-crystal-requirements'></p> <br>
+					<p id='building-crystal-dependencies'></p> <br>
+					<input class='upgrade-button'id="crystalUpgrade" type="button" value="Build" onclick="upgradeBuilding(this, 'crystal', currentPlanet, 'building-crystal-requirements')" />
+					</div>
+					<div class='span7'>
+						<p class='crystal-description'>Description: <br> Crystal mine makes crystal, man.</p>
+					</div>
+					</div>
+					</div>
+				
+					<hr>
+					<div class='buildings'>
+					<p class="building-name" id='building-fuel' onclick="changeLevel('fuel', 'building')"></p> <br>
+					<p id='building-fuel-requirements'></p> <br>
+					<p id='building-fuel-dependencies'></p> <br>
+					<input class='upgrade-button' id="fuelUpgrade" type="button" value="Build" onclick="upgradeBuilding(this, 'fuel', currentPlanet, 'building-fuel-requirements')" />
+					<hr>
+					<p class="building-name" id='building-energy' onclick="changeLevel('energy', 'building')"></p> <br>
+					<p id='building-energy-requirements'></p> <br>
+					<p id='building-energy-dependencies'></p> <br>
+					<input class='upgrade-button'id="energyUpgrade" type="button" value="Build" onclick="upgradeBuilding(this, 'energy', currentPlanet, 'building-energy-requirements')" />
+					<hr>
+					<p class="building-name" id='building-research' onclick="changeLevel('research', 'building')"></p> <br>
+					<p id='building-research-requirements'></p> <br>
+					<p id='building-research-dependencies'></p> <br>
+					<input class='upgrade-button'id="researchUpgrade" type="button" value="Build" onclick="upgradeBuilding(this, 'research', currentPlanet, 'building-research-requirements')" />
+					<hr>
+					<p class="building-name" id='building-robotics' onclick="changeLevel('robotics', 'building')"></p> <br>
+					<p id='building-robotics-requirements'></p> <br>
+					<p id='building-robotics-dependencies'></p> <br>
+					<input class='upgrade-button'id="roboticsUpgrade" type="button" value="Build" onclick="upgradeBuilding(this, 'robotics', currentPlanet, 'building-robotics-requirements')" />
+					<hr>
+					<p class="building-name" id='building-shipyard' onclick="changeLevel('shipyard', 'building')"></p> <br>
+					<p id='building-shipyard-requirements'></p> <br>
+					<p id='building-shipyard-dependencies'></p> <br>
+					<input class='upgrade-button'id="shipyardUpgrade" type="button" value="Build" onclick="upgradeBuilding(this, 'shipyard', currentPlanet, 'building-shipyard-requirements')" />
+					<hr>
+					<p class="building-name" id='building-nanite' onclick="changeLevel('nanite', 'building')"></p> <br>
+					<p id='building-nanite-requirements'></p> <br>
+					<p id='building-nanite-dependencies'></p> <br>
+					<input class='upgrade-button'id="naniteUpgrade" type="button" value="Build" onclick="upgradeBuilding(this, 'nanite', currentPlanet, 'building-nanite-requirements')" />
+					<hr>
+				</div> <!--buildings-->
+			</div> <!--container-->
+		</div> <!--buildingspage-->
+		
+		<div class='page' id="shipyardpage">
+				<div class='container' id='ship-info'> </div>
+				<div class='container' id='ship-list'>
+					<p class='ship-name' id='ship-scargo'></p> <br>
+					<p id='ship-scargo-requirements'></p> <br>
+					<p id='ship-scargo-dependencies'></p> <br>
+					<form id='ship-scargo-div'>
+						<span id='ship-scargo-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-scargo-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-scargo-queue').click(); return false;}">
+						<input class='queue-button' id='ship-scargo-queue' type='button' value='Add to queue' onclick='addToQueue("Small Cargo", currentPlanet, "ship-scargo-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-lcargo'></p> <br>
+					<p id='ship-lcargo-requirements'></p> <br>
+					<p id='ship-lcargo-dependencies'></p> <br>
+					<form id='ship-lcargo-div'>
+						<span id='ship-lcargo-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-lcargo-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-lcargo-queue').click(); return false;}">
+						<input class='queue-button' id='ship-lcargo-queue' type='button' value='Add to queue' onclick='addToQueue("Large Cargo", currentPlanet, "ship-lcargo-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-colony'></p> <br>
+					<p id='ship-colony-requirements'></p> <br>
+					<p id='ship-colony-dependencies'></p> <br>
+					<form id='ship-colony-div'>
+						<span id='ship-colony-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-colony-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-colony-queue').click(); return false;}">
+						<input class='queue-button' id='ship-colony-queue' type='button' value='Add to queue' onclick='addToQueue("Colony Ship", currentPlanet, "ship-colony-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-recycler'></p> <br>
+					<p id='ship-recycler-requirements'></p> <br>
+					<p id='ship-recycler-dependencies'></p> <br>
+					<form id='ship-recycler-div'>
+						<span id='ship-recycler-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-recycler-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-recycler-queue').click(); return false;}">
+						<input class='queue-button' id='ship-recycler-queue' type='button' value='Add to queue' onclick='addToQueue("Recycler", currentPlanet, "ship-recycler-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-probe'></p> <br>
+					<p id='ship-probe-requirements'></p> <br>
+					<p id='ship-probe-dependencies'></p> <br>
+					<form id='ship-probe-div'>
+						<span id='ship-probe-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-probe-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-probe-queue').click(); return false;}">
+						<input class='queue-button' id='ship-probe-queue' type='button' value='Add to queue' onclick='addToQueue("Espionage Probe", currentPlanet, "ship-probe-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-satellite'></p> <br>
+					<p id='ship-satellite-requirements'></p> <br>
+					<p id='ship-satellite-dependencies'></p> <br>
+					<form id='ship-satellite-div'>
+						<span id='ship-satellite-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-satellite-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-satellite-queue').click(); return false;}">
+						<input class='queue-button' id='ship-satellite-queue' type='button' value='Add to queue' onclick='addToQueue("Solar Satellite", currentPlanet, "ship-satellite-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-lfighter'></p> <br>
+					<p id='ship-lfighter-requirements'></p> <br>
+					<p id='ship-lfighter-dependencies'></p> <br>
+					<form id='ship-lfighter-div'>
+						<span id='ship-lfighter-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-lfighter-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-lfighter-queue').click(); return false;}">
+						<input class='queue-button' id='ship-lfighter-queue' type='button' value='Add to queue' onclick='addToQueue("Light Fighter", currentPlanet, "ship-lfighter-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-hfighter'></p> <br>
+					<p id='ship-hfighter-requirements'></p> <br>
+					<p id='ship-hfighter-dependencies'></p> <br>
+					<form id='ship-hfighter-div'>
+						<span id='ship-hfighter-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-hfighter-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-hfighter-queue').click(); return false;}">
+						<input class='queue-button' id='ship-hfighter-queue' type='button' value='Add to queue' onclick='addToQueue("Heavy Fighter", currentPlanet, "ship-hfighter-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-cruiser'></p> <br>
+					<p id='ship-cruiser-requirements'></p> <br>
+					<p id='ship-cruiser-dependencies'></p> <br>
+					<form id='ship-cruiser-div'>
+						<span id='ship-cruiser-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-cruiser-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-cruiser-queue').click(); return false;}">
+						<input class='queue-button' id='ship-cruiser-queue' type='button' value='Add to queue' onclick='addToQueue("Cruiser", currentPlanet, "ship-cruiser-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-battleship'></p> <br>
+					<p id='ship-battleship-requirements'></p> <br>
+					<p id='ship-battleship-dependencies'></p> <br>
+					<form id='ship-battleship-div'>
+						<span id='ship-battleship-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-battleship-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-battleship-queue').click(); return false;}">
+						<input class='queue-button' id='ship-battleship-queue' type='button' value='Add to queue' onclick='addToQueue("Battleship", currentPlanet, "ship-battleship-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-bomber'></p> <br>
+					<p id='ship-bomber-requirements'></p> <br>
+					<p id='ship-bomber-dependencies'></p> <br>
+					<form id='ship-bomber-div'>
+						<span id='ship-bomber-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-bomber-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-bomber-queue').click(); return false;}">
+						<input class='queue-button' id='ship-bomber-queue' type='button' value='Add to queue' onclick='addToQueue("Bomber", currentPlanet, "ship-bomber-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-battlecruiser'></p> <br>
+					<p id='ship-battlecruiser-requirements'></p> <br>
+					<p id='ship-battlecruiser-dependencies'></p> <br>
+					<form id='ship-battlecruiser-div'>
+						<span id='ship-battlecruiser-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-battlecruiser-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-battlecruiser-queue').click(); return false;}">
+						<input class='queue-button' id='ship-battlecruiser-queue' type='button' value='Add to queue' onclick='addToQueue("Battlecruiser", currentPlanet, "ship-battlecruiser-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-destroyer'></p> <br>
+					<p id='ship-destroyer-requirements'></p> <br>
+					<p id='ship-destroyer-dependencies'></p> <br>
+					<form id='ship-destroyer-div'>
+						<span id='ship-destroyer-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-destroyer-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-destroyer-queue').click(); return false;}">
+						<input class='queue-button' id='ship-destroyer-queue' type='button' value='Add to queue' onclick='addToQueue("Destroyer", currentPlanet, "ship-destroyer-text")'>
+					</form>
+					<hr>
+					<p class='ship-name' id='ship-deathstar'></p> <br>
+					<p id='ship-deathstar-requirements'></p> <br>
+					<p id='ship-deathstar-dependencies'></p> <br>
+					<form id='ship-deathstar-div'>
+						<span id='ship-deathstar-max'></span> <br>
+						<input title='Enter the amount of ships to build' type='text' class='queue-text' id='ship-deathstar-text' value='' onkeydown="if (event.keyCode == 13){ document.getElementById('ship-deathstar-queue').click(); return false;}">
+						<input class='queue-button' id='ship-deathstar-queue' type='button' value='Add to queue' onclick='addToQueue("Deathstar", currentPlanet, "ship-deathstar-text")'>
+					</form>
+					<hr>
+					<h3> Queue </h3>
+					<div class='queue' id='homeworld-shipyard-queue'></div>
+					<div class='queue' id='colony1-shipyard-queue'></div>
+					<div class='queue' id='colony2-shipyard-queue'></div>
+					<div class='queue' id='colony3-shipyard-queue'></div>
+					<div class='queue' id='colony4-shipyard-queue'></div>
+					<div class='queue' id='colony5-shipyard-queue'></div>
+					<div class='queue' id='colony6-shipyard-queue'></div>
+					<div class='queue' id='colony7-shipyard-queue'></div>
+					<div class='queue' id='colony8-shipyard-queue'></div>
+				</div> <!--ship-list-->
+		</div> <!--shipyardpage-->
+		
+		<div class='page' id="researchpage">
+			<div class='container' id='research-info'> </div>
+				<div class='container' id='research-list'>
+						<p class='research-name' id='research-energy' onclick="changeLevel('energy', 'research')"></p> <br>
+						<p id='research-energy-requirements'></p> <br>
+						<p id='research-energy-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-energy-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'energy', currentPlanet, 'research-energy-requirements')" />
+						<hr>
+						<p class='research-name' id='research-laser' onclick="changeLevel('laser', 'research')"></p> <br>
+						<p id='research-laser-requirements'></p> <br>
+						<p id='research-laser-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-laser-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'laser', currentPlanet, 'research-laser-requirements')" />
+						<hr>
+						<p class='research-name' id='research-ion' onclick="changeLevel('ion', 'research')"></p> <br>
+						<p id='research-ion-requirements'></p> <br>
+						<p id='research-ion-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-ion-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'ion', currentPlanet, 'research-ion-requirements')" />
+						<hr>
+						<p class='research-name' id='research-plasma' onclick="changeLevel('plasma', 'research')"></p> <br>
+						<p id='research-plasma-requirements'></p> <br>
+						<p id='research-plasma-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-plasma-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'plasma', currentPlanet, 'research-plasma-requirements')" />
+						<hr>
+						<p class='research-name' id='research-espionage' onclick="changeLevel('espionage', 'research')"></p> <br>
+						<p id='research-espionage-requirements'></p> <br>
+						<p id='research-espionage-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-espionage-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'espionage', currentPlanet, 'research-espionage-requirements')" />
+						<hr>
+						<p class='research-name' id='research-computer' onclick="changeLevel('computer', 'research')"></p> <br>
+						<p id='research-computer-requirements'></p> <br>
+						<p id='research-computer-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-computer-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'computer', currentPlanet, 'research-computer-requirements')" />
+						<hr>
+						<p class='research-name' id='research-hyperspaceTech' onclick="changeLevel('hyperspaceTech', 'research')"></p> <br>
+						<p id='research-hyperspaceTech-requirements'></p> <br>
+						<p id='research-hyperspaceTech-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-hyperspaceTech-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'hyperspaceTech', currentPlanet, 'research-hyperspaceTech-requirements')" />
+						<hr>
+						<p class='research-name' id='research-intergalactic' onclick="changeLevel('intergalactic', 'research')"></p> <br>
+						<p id='research-intergalactic-requirements'></p> <br>
+						<p id='research-intergalactic-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-intergalactic-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'intergalactic', currentPlanet, 'research-intergalactic-requirements')" />
+						<hr>
+						<p class='research-name' id='research-graviton' onclick="changeLevel('graviton', 'research')"></p> <br>
+						<p id='research-graviton-requirements'></p> <br>
+						<p id='research-graviton-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-graviton-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'graviton', currentPlanet, 'research-graviton-requirements')" />
+						<hr>
+						<p class='research-name' id='research-astrophysics' onclick="changeLevel('astrophysics', 'research')"></p> <br>
+						<p id='research-astrophysics-requirements'></p> <br>
+						<p id='research-astrophysics-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-astrophysics-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'astrophysics', currentPlanet, 'research-astrophysics-requirements')" />
+						<hr>
+						<p class='research-name' id='research-combustion' onclick="changeLevel('combustion', 'research')"></p> <br>
+						<p id='research-combustion-requirements'></p> <br>
+						<p id='research-combustion-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-combustion-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'combustion', currentPlanet, 'research-combustion-requirements')" />
+						<hr>
+						<p class='research-name' id='research-impulse' onclick="changeLevel('impulse', 'research')"></p> <br>
+						<p id='research-impulse-requirements'></p> <br>
+						<p id='research-impulse-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-impulse-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'impulse', currentPlanet, 'research-impulse-requirements')" />
+						<hr>
+						<p class='research-name' id='research-hyperspaceDrive' onclick="changeLevel('hyperspaceDrive', 'research')"></p> <br>
+						<p id='research-hyperspaceDrive-requirements'></p> <br>
+						<p id='research-hyperspaceDrive-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-hyperspaceDrive-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'hyperspaceDrive', currentPlanet, 'research-hyperspaceDrive-requirements')" />
+						<hr>
+						<p class='research-name' id='research-weapons' onclick="changeLevel('weapons', 'research')"></p> <br>
+						<p id='research-weapons-requirements'></p> <br>
+						<p id='research-weapons-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-weapons-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'weapons', currentPlanet, 'research-weapons-requirements')" />
+						<hr>
+						<p class='research-name' id='research-shielding' onclick="changeLevel('shielding', 'research')"></p> <br>
+						<p id='research-shielding-requirements'></p> <br>
+						<p id='research-shielding-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-shielding-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'shielding', currentPlanet, 'research-shielding-requirements')" />
+						<hr>
+						<p class='research-name' id='research-armor' onclick="changeLevel('armor', 'research')"></p> <br>
+						<p id='research-armor-requirements'></p> <br>
+						<p id='research-armor-dependencies'></p> <br>
+						<input class='upgrade-button'id="research-armor-upgrade" type="button" value="Research" onclick="upgradeResearch(this, 'armor', currentPlanet, 'research-armor-requirements')" />
+						<hr>
+				</div>
+		</div> <!--researchpage-->
+		
+		<div class='page' id="fleetpage">
+				<div class='container'>
+						<p class='fleet-list' id='fleet1'></p>
+				</div>
+		</div> <!--fleetpage-->
+		
+		<div class='page' id="galaxypage">
+				<div class='container'>
+						<p class='galaxy-list' id='galaxy1'></p>
+				</div>
+		</div> <!--galaxypage-->
+		
+		<div class='page' id="defensepage">
+				<div class='container'>
+						<p class='defense-list' id='defense1'></p>
+				</div>
+		</div> <!--defensepage-->
+			<div id="push"></div> <!--close push-->
+		</div> <!--close wrapper-->
+		<footer>
+		</footer> <!--close footer-->
+	</body>
+</html>
